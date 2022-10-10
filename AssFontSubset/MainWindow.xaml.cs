@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -90,8 +90,8 @@ namespace AssFontSubset
                 this.FileDrop(this.m_AssFiles);
                 this.Start.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             } else {
-                Task.Run(() => check_update("https://raw.githubusercontent.com/tastysugar/AssFontSubset/master/AssFontSubset/Properties/AssemblyInfo.cs"));
-                Task.Run(() => check_update("https://cdn.jsdelivr.net/gh/tastysugar/AssFontSubset@master/AssFontSubset/Properties/AssemblyInfo.cs"));
+                Task.Run(() => check_update("https://raw.githubusercontent.com/heartnn/AssFontSubset/master/AssFontSubset/Properties/AssemblyInfo.cs"));
+                Task.Run(() => check_update("https://cdn.jsdelivr.net/gh/heartnn/AssFontSubset@master/AssFontSubset/Properties/AssemblyInfo.cs"));
             }
         }
 
@@ -108,7 +108,7 @@ namespace AssFontSubset
                         if (onlineVer > localVer) {
                             var result = MessageBox.Show($"当前版本: {localVer.ToString()}\n发现新版本: {onlineVer.ToString()}\n请去 GitHub 主页下载", "新版", MessageBoxButton.YesNo);
                             if (result.ToString() == "Yes") {
-                                System.Diagnostics.Process.Start("https://github.com/tastysugar/AssFontSubset/releases");
+                                System.Diagnostics.Process.Start("https://github.com/heartnn/AssFontSubset/releases");
                             }
                         }
                     }
@@ -373,7 +373,7 @@ namespace AssFontSubset
                     OriginalFontFile = fontFile,
                     SubsetFontFile = outputFile + $".{randomString}._tmp_",
                     SubsetFontName = randomString,
-                    DumpedXmlFile = $@"{outputFolder}\{Path.GetFileNameWithoutExtension(outputFile)}.{index}.{randomString}.ttx",
+                    DumpedXmlFile = $@"{outputFolder}\{Path.GetFileNameWithoutExtension(outputFile)}.{randomString}.ttx",
                     TrackIndex = index
                 };
                 subsetFonts.Add(subsetFontInfo);
@@ -434,9 +434,6 @@ namespace AssFontSubset
                 foreach (XmlNode record in namerecords) {
                     string nameID = record.Attributes["nameID"].Value.Trim();
                     switch (nameID) {
-                        case "0":
-                            record.InnerText = $"Processed by AssFontSubset v{Assembly.GetEntryAssembly().GetName().Version}";
-                            break;
                         case "1":
                         case "3":
                         case "4":
@@ -532,7 +529,6 @@ namespace AssFontSubset
                 }
 
                 int index = assContent.FindIndex(row => row.Length >= 13 && row.Substring(0, 13).ToLower() == "[script info]");
-                assContent.Insert(index + 1, $"; Processed by AssFontSubset v{Assembly.GetEntryAssembly().GetName().Version}");
                 assContent.Insert(index + 1, string.Join("\r\n", subsetComments));
 
                 string newAssContent = string.Join("\r\n", assContent);
